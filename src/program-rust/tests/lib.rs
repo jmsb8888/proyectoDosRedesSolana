@@ -23,7 +23,7 @@ async fn test_AppleStockSim() {
     /// Crea una nueva clave publica para la prueba
     let program_id = Pubkey::new_unique();
     /// Crea una cuenta usuario
-    let greeted_pubkey = Pubkey::new_unique();
+    let reviewed_pubkey = Pubkey::new_unique();
     /// Inicia la instancia de prueba
     let mut program_test = ProgramTest::new(
         "AppleStockSim",
@@ -32,7 +32,7 @@ async fn test_AppleStockSim() {
     );
     /// Agrega una cuenta al programa de prueba
     program_test.add_account(
-        greeted_pubkey,
+        reviewed_pubkey,
         Account {
             lamports: 5,
             data: vec![0_u8; mem::size_of::<u32>()],
@@ -44,13 +44,13 @@ async fn test_AppleStockSim() {
     let (mut banks_client, payer, recent_blockhash) = program_test.start().await;
 
     /// valida las condiciones de inicialización del programa, counter debe ser 0
-    let greeted_account = banks_client
-        .get_account(greeted_pubkey)
+    let reviewed_account = banks_client
+        .get_account(reviewed_pubkey)
         .await
         .expect("get_account")
-        .expect("greeted_account not found");
+        .expect("reviewed_account not found");
     assert_eq!(
-        GreetingAccount::try_from_slice(&greeted_account.data)
+        GreetingAccount::try_from_slice(&reviewed_account.data)
             .unwrap()
             .counter,
         0
@@ -61,7 +61,7 @@ async fn test_AppleStockSim() {
         &[Instruction::new_with_bincode(
             program_id,
             &[0], // ignored but makes the instruction unique in the slot
-            vec![AccountMeta::new(greeted_pubkey, false)],
+            vec![AccountMeta::new(reviewed_pubkey, false)],
         )],
         Some(&payer.pubkey()),
     );
@@ -70,13 +70,13 @@ async fn test_AppleStockSim() {
     banks_client.process_transaction(transaction).await.unwrap();
 
     /// Verifica el resultado de la transacción, ahora count debe ser 1
-    let greeted_account = banks_client
-        .get_account(greeted_pubkey)
+    let verify_account = banks_client
+        .get_account(reviewed_pubkey)
         .await
         .expect("get_account")
-        .expect("greeted_account not found");
+        .expect("verify_account not found");
     assert_eq!(
-        GreetingAccount::try_from_slice(&greeted_account.data)
+        GreetingAccount::try_from_slice(&verify_account.data)
             .unwrap()
             .counter,
         1
@@ -87,7 +87,7 @@ async fn test_AppleStockSim() {
         &[Instruction::new_with_bincode(
             program_id,
             &[1], // ignored but makes the instruction unique in the slot
-            vec![AccountMeta::new(greeted_pubkey, false)],
+            vec![AccountMeta::new(reviewed_pubkey, false)],
         )],
         Some(&payer.pubkey()),
     );
@@ -96,13 +96,13 @@ async fn test_AppleStockSim() {
     banks_client.process_transaction(transaction).await.unwrap();
 
     /// Verifica el resultado de la transacción, counter ahora deber ser 2
-    let greeted_account = banks_client
-        .get_account(greeted_pubkey)
+    let verify_two_account = banks_client
+        .get_account(reviewed_pubkey)
         .await
         .expect("get_account")
-        .expect("greeted_account not found");
+        .expect("verify_account not found");
     assert_eq!(
-        GreetingAccount::try_from_slice(&greeted_account.data)
+        GreetingAccount::try_from_slice(&verify_two_account.data)
             .unwrap()
             .counter,
         2
