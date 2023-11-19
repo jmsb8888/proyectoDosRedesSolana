@@ -2,7 +2,7 @@
 /// Importa las macros de serialización Y deserialización de Bors
 use borsh::BorshDeserialize;
 /// Importa los elementos de prueba
-use AppleStockSim::{process_instruction, BuyAccount};
+use apple_stock_sim::{process_instruction, BuyAccount};
 /// Importa los elementos publicos del test
 use solana_program_test::*;
 /// Importa los elemtos nesesarios para realizar las pruebas, tal como la estructura de cuentras, las instrucciones, las claves, las firmas y las transacciones

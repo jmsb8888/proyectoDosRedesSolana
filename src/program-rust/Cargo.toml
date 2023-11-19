@@ -22,5 +22,5 @@ solana-program-test = "~1.10.35"
 solana-sdk = "~1.10.35"
 
 [lib]
-name = "AppleStockSim"
+name = "apple_stock_sim"
 crate-type = ["cdylib", "lib"]
