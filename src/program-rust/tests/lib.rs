@@ -1,6 +1,11 @@
+/// Importación de bibliotecas necesarias para el la realizacion del test
+/// Importa las macros de serialización Y deserialización de Bors
 use borsh::BorshDeserialize;
+/// Importa los elementos de prueba
 use helloworld::{process_instruction, GreetingAccount};
+/// Importa los elementos publicos del test
 use solana_program_test::*;
+/// Importa los elemtos nesesarios para realizar las pruebas, tal como la estructura de cuentras, las instrucciones, las claves, las firmas y las transacciones
 use solana_sdk::{
     account::Account,
     instruction::{AccountMeta, Instruction},
@@ -8,18 +13,24 @@ use solana_sdk::{
     signature::Signer,
     transaction::Transaction,
 };
+/// importa las librerias necesarias para interactuar con el sistema y la memoria del dispositivo
 use std::mem;
-
+/// establece el runtime de tokio para la prueba
+/// para solana se toma como un estandar tokio
 #[tokio::test]
-async fn test_helloworld() {
+/// declara el test basico
+async fn test_AppleStockSim() {
+    /// Crea una nueva clave publica para la prueba
     let program_id = Pubkey::new_unique();
+    /// Crea una cuenta usuario
     let greeted_pubkey = Pubkey::new_unique();
-
+    /// Inicia la instancia de prueba
     let mut program_test = ProgramTest::new(
-        "helloworld", // Run the BPF version with `cargo test-bpf`
+        "AppleStockSim",
         program_id,
-        processor!(process_instruction), // Run the native version with `cargo test`
+        processor!(process_instruction),
     );
+    /// Agrega una cuenta al programa de prueba
     program_test.add_account(
         greeted_pubkey,
         Account {
@@ -29,9 +40,10 @@ async fn test_helloworld() {
             ..Account::default()
         },
     );
+    /// Obtiene los datos nesesarios para realizar la interaccion con el programa
     let (mut banks_client, payer, recent_blockhash) = program_test.start().await;
 
-    // Verify account has zero greetings
+    /// valida las condiciones de inicialización del programa, counter debe ser 0
     let greeted_account = banks_client
         .get_account(greeted_pubkey)
         .await
@@ -44,7 +56,7 @@ async fn test_helloworld() {
         0
     );
 
-    // Greet once
+    /// Crea la transacción de prueba
     let mut transaction = Transaction::new_with_payer(
         &[Instruction::new_with_bincode(
             program_id,
@@ -53,10 +65,11 @@ async fn test_helloworld() {
         )],
         Some(&payer.pubkey()),
     );
+    /// Firma de la transacción
     transaction.sign(&[&payer], recent_blockhash);
     banks_client.process_transaction(transaction).await.unwrap();
 
-    // Verify account has one greeting
+    /// Verifica el resultado de la transacción, ahora count debe ser 1
     let greeted_account = banks_client
         .get_account(greeted_pubkey)
         .await
@@ -69,7 +82,7 @@ async fn test_helloworld() {
         1
     );
 
-    // Greet again
+    /// Realiza un nuevo llamado de prueba
     let mut transaction = Transaction::new_with_payer(
         &[Instruction::new_with_bincode(
             program_id,
@@ -78,10 +91,11 @@ async fn test_helloworld() {
         )],
         Some(&payer.pubkey()),
     );
+    /// Firma y envia la transacción
     transaction.sign(&[&payer], recent_blockhash);
     banks_client.process_transaction(transaction).await.unwrap();
 
-    // Verify account has two greetings
+    /// Verifica el resultado de la transacción, counter ahora deber ser 2
     let greeted_account = banks_client
         .get_account(greeted_pubkey)
         .await
