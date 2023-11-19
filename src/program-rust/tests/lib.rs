@@ -2,7 +2,7 @@
 /// Importa las macros de serialización Y deserialización de Bors
 use borsh::BorshDeserialize;
 /// Importa los elementos de prueba
-use AppleStockSim::{process_instruction, GreetingAccount};
+use AppleStockSim::{process_instruction, BuyAccount};
 /// Importa los elementos publicos del test
 use solana_program_test::*;
 /// Importa los elemtos nesesarios para realizar las pruebas, tal como la estructura de cuentras, las instrucciones, las claves, las firmas y las transacciones
@@ -19,7 +19,7 @@ use std::mem;
 /// para solana se toma como un estandar tokio
 #[tokio::test]
 // declara el test basico
-async fn test_AppleStockSim() {
+async fn test_apple_stock_sim() {
     // Crea una nueva clave publica para la prueba
     let program_id = Pubkey::new_unique();
     // Crea una cuenta usuario
