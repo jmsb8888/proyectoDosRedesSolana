@@ -18,19 +18,19 @@ use std::mem;
 /// establece el runtime de tokio para la prueba
 /// para solana se toma como un estandar tokio
 #[tokio::test]
-/// declara el test basico
+// declara el test basico
 async fn test_AppleStockSim() {
-    /// Crea una nueva clave publica para la prueba
+    // Crea una nueva clave publica para la prueba
     let program_id = Pubkey::new_unique();
-    /// Crea una cuenta usuario
+    // Crea una cuenta usuario
     let reviewed_pubkey = Pubkey::new_unique();
-    /// Inicia la instancia de prueba
+    // Inicia la instancia de prueba
     let mut program_test = ProgramTest::new(
         "AppleStockSim",
         program_id,
         processor!(process_instruction),
     );
-    /// Agrega una cuenta al programa de prueba
+    // Agrega una cuenta al programa de prueba
     program_test.add_account(
         reviewed_pubkey,
         Account {
