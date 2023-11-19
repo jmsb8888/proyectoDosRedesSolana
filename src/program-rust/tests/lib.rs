@@ -50,7 +50,7 @@ async fn test_apple_stock_sim() {
         .expect("get_account")
         .expect("reviewed_account not found");
     assert_eq!(
-        GreetingAccount::try_from_slice(&reviewed_account.data)
+        BuyAccount::try_from_slice(&reviewed_account.data)
             .unwrap()
             .counter,
         0
@@ -76,7 +76,7 @@ async fn test_apple_stock_sim() {
         .expect("get_account")
         .expect("verify_account not found");
     assert_eq!(
-        GreetingAccount::try_from_slice(&verify_account.data)
+        BuyAccount::try_from_slice(&verify_account.data)
             .unwrap()
             .counter,
         1
@@ -102,7 +102,7 @@ async fn test_apple_stock_sim() {
         .expect("get_account")
         .expect("verify_account not found");
     assert_eq!(
-        GreetingAccount::try_from_slice(&verify_two_account.data)
+        BuyAccount::try_from_slice(&verify_two_account.data)
             .unwrap()
             .counter,
         2
