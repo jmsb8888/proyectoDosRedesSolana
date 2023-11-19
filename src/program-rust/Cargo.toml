@@ -1,6 +1,6 @@
 
 [package]
-name = "solana-bpf-storebooks"
+name = "solana-bpf-AppleStockSim"
 version = "0.0.1"
 description = "Rust"
 authors = ["Solana Maintainers <maintainers@solana.com>"]

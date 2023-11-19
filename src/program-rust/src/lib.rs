@@ -24,7 +24,7 @@ pub struct BuyAccount {
     pub counter: u32,
 }
 
-/// Declarar y exportar el punto de entrada del programa
+// Declarar y exportar el punto de entrada del programa
 entrypoint!(process_instruction);
 
 /// Implementación del punto de entrada del programa
@@ -93,7 +93,7 @@ mod test {
         // Crear un vector de cuentas para la prueba
         let accounts = vec![account];
 
-        /// Asegurarse de que el contador de compras comienza en 0
+        // Asegurarse de que el contador de compras comienza en 0
         assert_eq!(
             BuyAccount::try_from_slice(&accounts[0].data.borrow())
                 .unwrap()
@@ -101,10 +101,10 @@ mod test {
             0
         );
 
-        /// Llamar al programa una vez
+        // Llamar al programa una vez
         process_instruction(&program_id, &accounts, &instruction_data).unwrap();
 
-        /// Verificar que el contador de compras se incrementa a 1
+        // Verificar que el contador de compras se incrementa a 1
         assert_eq!(
             BuyAccount::try_from_slice(&accounts[0].data.borrow())
                 .unwrap()
@@ -112,10 +112,10 @@ mod test {
             1
         );
 
-        /// Llamar al programa nuevamente
+        // Llamar al programa nuevamente
         process_instruction(&program_id, &accounts, &instruction_data).unwrap();
 
-        /// Verificar que el contador de compras se incrementa a 2
+        // Verificar que el contador de compras se incrementa a 2
         assert_eq!(
             BuyAccount::try_from_slice(&accounts[0].data.borrow())
                 .unwrap()

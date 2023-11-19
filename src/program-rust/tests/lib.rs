@@ -2,7 +2,7 @@
 /// Importa las macros de serialización Y deserialización de Bors
 use borsh::BorshDeserialize;
 /// Importa los elementos de prueba
-use helloworld::{process_instruction, GreetingAccount};
+use AppleStockSim::{process_instruction, GreetingAccount};
 /// Importa los elementos publicos del test
 use solana_program_test::*;
 /// Importa los elemtos nesesarios para realizar las pruebas, tal como la estructura de cuentras, las instrucciones, las claves, las firmas y las transacciones
@@ -40,10 +40,10 @@ async fn test_AppleStockSim() {
             ..Account::default()
         },
     );
-    /// Obtiene los datos nesesarios para realizar la interaccion con el programa
+    // Obtiene los datos nesesarios para realizar la interaccion con el programa
     let (mut banks_client, payer, recent_blockhash) = program_test.start().await;
 
-    /// valida las condiciones de inicialización del programa, counter debe ser 0
+    // valida las condiciones de inicialización del programa, counter debe ser 0
     let reviewed_account = banks_client
         .get_account(reviewed_pubkey)
         .await
@@ -56,7 +56,7 @@ async fn test_AppleStockSim() {
         0
     );
 
-    /// Crea la transacción de prueba
+    // Crea la transacción de prueba
     let mut transaction = Transaction::new_with_payer(
         &[Instruction::new_with_bincode(
             program_id,
@@ -65,11 +65,11 @@ async fn test_AppleStockSim() {
         )],
         Some(&payer.pubkey()),
     );
-    /// Firma de la transacción
+    // Firma de la transacción
     transaction.sign(&[&payer], recent_blockhash);
     banks_client.process_transaction(transaction).await.unwrap();
 
-    /// Verifica el resultado de la transacción, ahora count debe ser 1
+    // Verifica el resultado de la transacción, ahora count debe ser 1
     let verify_account = banks_client
         .get_account(reviewed_pubkey)
         .await
@@ -82,7 +82,7 @@ async fn test_AppleStockSim() {
         1
     );
 
-    /// Realiza un nuevo llamado de prueba
+    // Realiza un nuevo llamado de prueba
     let mut transaction = Transaction::new_with_payer(
         &[Instruction::new_with_bincode(
             program_id,
@@ -91,11 +91,11 @@ async fn test_AppleStockSim() {
         )],
         Some(&payer.pubkey()),
     );
-    /// Firma y envia la transacción
+    // Firma y envia la transacción
     transaction.sign(&[&payer], recent_blockhash);
     banks_client.process_transaction(transaction).await.unwrap();
 
-    /// Verifica el resultado de la transacción, counter ahora deber ser 2
+    // Verifica el resultado de la transacción, counter ahora deber ser 2
     let verify_two_account = banks_client
         .get_account(reviewed_pubkey)
         .await
